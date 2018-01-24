@@ -1,3 +1,11 @@
+/* Asignando el display de la calculadora */
+
+var display = document.getElementById('display')
+var operandos = {
+  operador: "",
+  opAnterior: "",
+  numAnterior: 0
+}
 
 var calculadora = {
   init: function(){
@@ -23,7 +31,7 @@ var calculadora = {
     var igual = document.getElementById('igual')
     /* Animacion de teclas*/
     tecla0.addEventListener("click", function(){
-
+      self.numero("0")
     })
     tecla0.addEventListener("mousedown", function(){
       tecla0.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -32,7 +40,7 @@ var calculadora = {
       tecla0.setAttribute("style", "transform: scale(1,1)")
     })
     tecla1.addEventListener("click", function(){
-
+      self.numero("1")
     })
     tecla1.addEventListener("mousedown", function(){
       tecla1.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -41,7 +49,7 @@ var calculadora = {
       tecla1.setAttribute("style", "transform: scale(1,1)")
     })
     tecla2.addEventListener("click", function(){
-
+      self.numero("2")
     })
     tecla2.addEventListener("mousedown", function(){
       tecla2.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -50,7 +58,7 @@ var calculadora = {
       tecla2.setAttribute("style", "transform: scale(1,1)")
     })
     tecla3.addEventListener("click", function(){
-
+      self.numero("3")
     })
     tecla3.addEventListener("mousedown", function(){
       tecla3.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -59,7 +67,7 @@ var calculadora = {
       tecla3.setAttribute("style", "transform: scale(1,1)")
     })
     tecla4.addEventListener("click", function(){
-
+      self.numero("4")
     })
     tecla4.addEventListener("mousedown", function(){
       tecla4.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -68,7 +76,7 @@ var calculadora = {
       tecla4.setAttribute("style", "transform: scale(1,1)")
     })
     tecla5.addEventListener("click", function(){
-
+      self.numero("5")
     })
     tecla5.addEventListener("mousedown", function(){
       tecla5.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -77,7 +85,7 @@ var calculadora = {
       tecla5.setAttribute("style", "transform: scale(1,1)")
     })
     tecla6.addEventListener("click", function(){
-
+      self.numero("6")
     })
     tecla6.addEventListener("mousedown", function(){
       tecla6.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -86,7 +94,7 @@ var calculadora = {
       tecla6.setAttribute("style", "transform: scale(1,1)")
     })
     tecla7.addEventListener("click", function(){
-
+      self.numero("7")
     })
     tecla7.addEventListener("mousedown", function(){
       tecla7.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -95,7 +103,7 @@ var calculadora = {
       tecla7.setAttribute("style", "transform: scale(1,1)")
     })
     tecla8.addEventListener("click", function(){
-
+      self.numero("8")
     })
     tecla8.addEventListener("mousedown", function(){
       tecla8.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -104,7 +112,7 @@ var calculadora = {
       tecla8.setAttribute("style", "transform: scale(1,1)")
     })
     tecla9.addEventListener("click", function(){
-
+      self.numero("9")
     })
     tecla9.addEventListener("mousedown", function(){
       tecla9.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -113,7 +121,7 @@ var calculadora = {
       tecla9.setAttribute("style", "transform: scale(1,1)")
     })
     on.addEventListener("click", function(){
-
+      display.innerHTML= 0
     })
     on.addEventListener("mousedown", function(){
       on.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -122,7 +130,7 @@ var calculadora = {
       on.setAttribute("style", "transform: scale(1,1)")
     })
     signo.addEventListener("click", function(){
-
+      self.signo()
     })
     signo.addEventListener("mousedown", function(){
       signo.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -131,6 +139,9 @@ var calculadora = {
       signo.setAttribute("style", "transform: scale(1,1)")
     })
     punto.addEventListener("click", function(){
+      if(!display.innerHTML.includes(".")){
+        self.numero(".")
+      }
 
     })
     punto.addEventListener("mousedown", function(){
@@ -185,7 +196,39 @@ var calculadora = {
       igual.setAttribute("style", "transform: scale(1,1)")
     })
 
+  },
+  numero: function (num){
+    var numPantalla = display.innerHTML
+    /* Validando que no hayan mas de 8 digitos*/
+    if(numPantalla.length<9){
+      /* Si el punto es el primer caracter ingresado */
+      if(num=="."&&numPantalla=="0"){
+        display.innerHTML+=num;
+      }
+      else if(numPantalla=="0"){
+        display.innerHTML = num;
+      }else{
+        display.innerHTML+=num;
+      }
+    }
+  },
+
+  signo: function(){
+    var numPantalla = display.innerHTML
+    if(numPantalla != "0"){
+      if(numPantalla.includes("-")){
+        numPantalla.charAt(numPantalla.length-1)="";
+      }else{
+        var cadena = numPantalla.split("").numPantalla
+        var aux = ""
+        numPantalla+="-"
+        for (var i = cadena.lenght-1 ; i > 0; i--) {
+          aux = numPantalla[i]
+        }
+      }
+    }
   }
+
 }
 
 calculadora.init()
