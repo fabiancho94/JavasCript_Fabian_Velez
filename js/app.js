@@ -121,7 +121,7 @@ var calculadora = {
       tecla9.setAttribute("style", "transform: scale(1,1)")
     })
     on.addEventListener("click", function(){
-      display.innerHTML= 0
+      self.numero("on")
     })
     on.addEventListener("mousedown", function(){
       on.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -151,7 +151,8 @@ var calculadora = {
       punto.setAttribute("style", "transform: scale(1,1)")
     })
     mas.addEventListener("click", function(){
-
+      self.operandos("+")
+      display.innerHTML = ""
     })
     mas.addEventListener("mousedown", function(){
       mas.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -160,7 +161,8 @@ var calculadora = {
       mas.setAttribute("style", "transform: scale(1,1)")
     })
     menos.addEventListener("click", function(){
-
+      self.operandos("-")
+      display.innerHTML = ""
     })
     menos.addEventListener("mousedown", function(){
       menos.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -169,7 +171,8 @@ var calculadora = {
       menos.setAttribute("style", "transform: scale(1,1)")
     })
     por.addEventListener("click", function(){
-
+      self.operandos("*")
+      display.innerHTML = ""
     })
     por.addEventListener("mousedown", function(){
       por.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -178,7 +181,8 @@ var calculadora = {
       por.setAttribute("style", "transform: scale(1,1)")
     })
     dividido.addEventListener("click", function(){
-
+      self.operandos("/")
+      display.innerHTML = ""
     })
     dividido.addEventListener("mousedown", function(){
       dividido.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -187,7 +191,7 @@ var calculadora = {
       dividido.setAttribute("style", "transform: scale(1,1)")
     })
     igual.addEventListener("click", function(){
-
+      self.operandos("=")
     })
     igual.addEventListener("mousedown", function(){
       igual.setAttribute("style", "transform: scale(0.95,0.95)")
@@ -211,24 +215,163 @@ var calculadora = {
         display.innerHTML+=num;
       }
     }
+    if(num == "on" ){
+      operandos.numAnterior = 0
+      operandos.opAnterior = ""
+      operandos.operador = ""
+      display.innerHTML= 0
+    }
   },
 
   signo: function(){
     var numPantalla = display.innerHTML
+    var aux = numPantalla
+    /* Validando si el numero es diferente del cero inicial */
     if(numPantalla != "0"){
+      /* Si ya tiene el signo, se lo quita */
       if(numPantalla.includes("-")){
-        numPantalla.charAt(numPantalla.length-1)="";
-      }else{
-        var cadena = numPantalla.split("").numPantalla
-        var aux = ""
-        numPantalla+="-"
-        for (var i = cadena.lenght-1 ; i > 0; i--) {
-          aux = numPantalla[i]
-        }
+        display.innerHTML = numPantalla.substr(1,numPantalla.length-1)
+      }else{ /* De lo contrario se lo asigna */
+        numPantalla = "-"
+        numPantalla+=aux
+        display.innerHTML = numPantalla
       }
     }
-  }
+  },
 
+  operandos: function(op) {
+    switch(op){
+      case "+":
+        operandos.operador=op
+        switch(operandos.opAnterior){
+          case "+":
+            operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+            display.innerHTML = operandos.numAnterior
+            operandos.opAnterior = operandos.operador
+            break
+          case "-":
+            operandos.numAnterior = operandos.numAnterior - parseFloat(display.innerHTML)
+            display.innerHTML = operandos.numAnterior
+            operandos.opAnterior = operandos.operador
+            break
+          case "*":
+            operandos.numAnterior = operandos.numAnterior * parseFloat(display.innerHTML)
+            display.innerHTML = operandos.numAnterior
+            operandos.opAnterior = operandos.operador
+            break
+          case "/":
+            operandos.numAnterior = operandos.numAnterior / parseFloat(display.innerHTML)
+            display.innerHTML = operandos.numAnterior
+            operandos.opAnterior = operandos.operador
+            break
+        }
+
+        break
+
+        case "-":
+          operandos.operador=op
+          switch(operandos.opAnterior){
+            case "+":
+              operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+              display.innerHTML = operandos.numAnterior
+              operandos.opAnterior = operandos.operador
+              break
+            case "-":
+              operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+              display.innerHTML = operandos.numAnterior
+              operandos.opAnterior = operandos.operador
+              break
+            case "*":
+              operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+              display.innerHTML = operandos.numAnterior
+              operandos.opAnterior = operandos.operador
+              break
+            case "/":
+              operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+              display.innerHTML = operandos.numAnterior
+              operandos.opAnterior = operandos.operador
+              break
+          }
+          break
+
+          case "*":
+            operandos.operador=op
+            switch(operandos.opAnterior){
+              case "+":
+                operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+                display.innerHTML = operandos.numAnterior
+                operandos.opAnterior = operandos.operador
+                break
+              case "-":
+                operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+                display.innerHTML = operandos.numAnterior
+                operandos.opAnterior = operandos.operador
+                break
+              case "*":
+                operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+                display.innerHTML = operandos.numAnterior
+                operandos.opAnterior = operandos.operador
+                break
+              case "/":
+                operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+                display.innerHTML = operandos.numAnterior
+                operandos.opAnterior = operandos.operador
+                break
+            }
+            break
+
+            case "/":
+              operandos.operador=op
+              switch(operandos.opAnterior){
+                case "+":
+                  operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+                  display.innerHTML = operandos.numAnterior
+                  operandos.opAnterior = operandos.operador
+                  break
+                case "-":
+                  operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+                  display.innerHTML = operandos.numAnterior
+                  operandos.opAnterior = operandos.operador
+                  break
+                case "*":
+                  operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+                  display.innerHTML = operandos.numAnterior
+                  operandos.opAnterior = operandos.operador
+                  break
+                case "/":
+                  operandos.numAnterior = operandos.numAnterior + parseFloat(display.innerHTML)
+                  display.innerHTML = operandos.numAnterior
+                  operandos.opAnterior = operandos.operador
+                  break
+              }
+              break
+
+              case "=" :
+
+                switch (operandos.operador) {
+                  case "+":
+                  display.innerHTML = operandos.numAnterior + parseFloat(display.innerHTML)
+                  operandos.opAnterior = operandos.operador
+                  break
+                  case "-":
+                  display.innerHTML = operandos.numAnterior - parseFloat(display.innerHTML)
+                  operandos.opAnterior = operandos.operador
+                  break
+                  case "*":
+                  display.innerHTML = operandos.numAnterior * parseFloat(display.innerHTML)
+                  operandos.opAnterior = operandos.operador
+                  break
+                  case "/":
+                  display.innerHTML = operandos.numAnterior / parseFloat(display.innerHTML)
+                  operandos.opAnterior = operandos.operador
+                  break
+                }
+              break
+    }
+    if(operandos.numAnterior==0){
+      operandos.numAnterior = parseFloat(display.innerHTML)
+    }
+  }
 }
 
 calculadora.init()
