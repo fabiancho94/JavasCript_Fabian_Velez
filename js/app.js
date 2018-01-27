@@ -3,6 +3,8 @@
 var display = document.getElementById('display')
 var acum = 0
 var numPantalla = ""
+/* Variable para saber si es la primera operacion que realiza la calc */
+var primerOp = true
 var operandos = {
   operador: "",
   opAnterior: "",
@@ -220,6 +222,9 @@ var calculadora = {
       operandos.numAnterior = 0
       operandos.opAnterior = ""
       operandos.operador = ""
+      acum = 0
+      numPantalla = ""
+      primerOp = true
       display.innerHTML= 0
     }
   },
@@ -241,44 +246,90 @@ var calculadora = {
   },
 
   operandos: function(op) {
+
     switch (op) {
       case "+":
+      if(operandos.opAnterior == "*" || operandos.opAnterior == "/"){
+        acum = acum + parseFloat(numPantalla)-1
+        display.innerHTML = numPantalla = ""
+        operandos.opAnterior = "+"
+        primerOp = false
+      }else {
         acum = acum + parseFloat(numPantalla)
         display.innerHTML = numPantalla = ""
         operandos.opAnterior = "+"
+        primerOp = false
+      }
         break;
       case "-":
-        acum = acum - parseFloat(numPantalla)
-        display.innerHTML = numPantalla = ""
-        operandos.opAnterior = "-"
+        if (primerOp) {
+          acum = parseFloat(numPantalla)
+          primerOp = false
+          display.innerHTML = numPantalla = ""
+          operandos.opAnterior = "-"
+        }else if(operandos.opAnterior == "*" || operandos.opAnterior == "/"){
+          acum = acum + parseFloat(numPantalla)-1
+          display.innerHTML = numPantalla = ""
+          operandos.opAnterior = "-"
+          primerOp = false
+        }else {
+          acum = acum - parseFloat(numPantalla)
+          display.innerHTML = numPantalla = ""
+          operandos.opAnterior = "-"
+        }
         break;
       case "*":
+      if (primerOp) {
+        acum = parseFloat(numPantalla)
+        primerOp = false
+        display.innerHTML = numPantalla = ""
+        operandos.opAnterior = "*"
+      }else if (operandos.opAnterior == "+" || operandos.opAnterior == "-") {
+        acum = acum + parseFloat(numPantalla)
+        display.innerHTML = numPantalla = ""
+        operandos.opAnterior = "*"
+        primerOp = false
+      }
+
+      else{
         acum = acum * parseFloat(numPantalla)
         display.innerHTML = numPantalla = ""
         operandos.opAnterior = "*"
-        break;
+      }
+      break;
       case "/":
+      if (primerOp) {
+        acum = parseFloat(numPantalla)
+        primerOp = false
+        display.innerHTML = numPantalla = ""
+        operandos.opAnterior = "/"
+      }else{
         acum = acum / parseFloat(numPantalla)
         display.innerHTML = numPantalla = ""
         operandos.opAnterior = "/"
-        break;
+      }
+      break;
       case "=":
         switch (operandos.opAnterior) {
           case "+":
             acum = acum + parseFloat(numPantalla)
             display.innerHTML = acum
+            numPantalla = 0
             break;
           case "-":
             acum = acum - parseFloat(numPantalla)
             display.innerHTML = acum
+            numPantalla =0
             break;
           case "*":
-            acum = acum / parseFloat(numPantalla)
+            acum = acum * parseFloat(numPantalla)
             display.innerHTML = acum
+            numPantalla =1
             break;
           case "/":
             acum = acum / parseFloat(numPantalla)
             display.innerHTML = acum
+            numPantalla =1
             break;
         }
 
