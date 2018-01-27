@@ -204,7 +204,7 @@ var calculadora = {
   numero: function (num){
     numPantalla = display.innerHTML
     /* Validando que no hayan mas de 8 digitos*/
-    if(numPantalla.length<9){
+    if(numPantalla.length<8){
       /* Si el punto es el primer caracter ingresado */
       if(num=="."&&numPantalla=="0"){
         numPantalla+=num
@@ -327,18 +327,22 @@ var calculadora = {
         switch (operandos.opAnterior) {
           case "+":
             acum = acum + operandos.numAnterior
+            acum = organizarDisplay(acum)
             display.innerHTML = acum
             break;
           case "-":
             acum = acum - operandos.numAnterior
+            acum = organizarDisplay(acum)
             display.innerHTML = acum
             break;
           case "*":
             acum = acum * operandos.numAnterior
+            acum = organizarDisplay(acum)
             display.innerHTML = acum
             break;
           case "/":
             acum = acum / operandos.numAnterior
+            acum = organizarDisplay(acum)
             display.innerHTML = acum
             break;
         }
@@ -351,6 +355,7 @@ var calculadora = {
             operandos.numAnterior = parseFloat(display.innerHTML)
           }
           acum = acum + parseFloat(numPantalla)
+          acum = organizarDisplay(acum)
           display.innerHTML = acum
           numPantalla = 0
           operandos.operador = "="
@@ -360,6 +365,7 @@ var calculadora = {
             operandos.numAnterior = parseFloat(display.innerHTML)
           }
           acum = acum - parseFloat(numPantalla)
+          acum = organizarDisplay(acum)
           display.innerHTML = acum
           numPantalla =0
           operandos.operador = "="
@@ -369,6 +375,7 @@ var calculadora = {
             operandos.numAnterior = parseFloat(display.innerHTML)
           }
           acum = acum * parseFloat(numPantalla)
+          acum = organizarDisplay(acum)
           display.innerHTML = acum
           numPantalla =1
           operandos.operador = "="
@@ -378,6 +385,7 @@ var calculadora = {
             operandos.numAnterior = parseFloat(display.innerHTML)
           }
           acum = acum / parseFloat(numPantalla)
+          acum = organizarDisplay(acum)
           display.innerHTML = acum
           numPantalla =1
           operandos.operador = "="
@@ -388,6 +396,15 @@ var calculadora = {
     }
   }
 
+}
+
+function organizarDisplay(pantalla){
+  var cadena = String(pantalla)
+  if (cadena.length > 8) {
+    return parseFloat(cadena.substr(0,8))
+  }else {
+    return pantalla
+  }
 }
 
 calculadora.init()
