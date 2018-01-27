@@ -1,10 +1,10 @@
-/* Asignando el display de la calculadora e iniciacion de variables */
-
+/* Asignando el display de la calculadora */
 var display = document.getElementById('display')
+/* acum = acumulado de las operaciones, primerOp = si es la primera operacion que se esta realizando, numPantalla = El numero actualmente escrito */
 var acum = 0
 var numPantalla = ""
-/* Variable para saber si es la primera operacion que realiza la calc */
 var primerOp = true
+/* El objeto usado para organizar las operaciones */
 var operandos = {
   operador: "",
   opAnterior: "",
@@ -260,6 +260,7 @@ var calculadora = {
         operandos.opAnterior = "+"
         primerOp = false
       }
+        operandos.operador = "+"
         break;
       case "-":
         if (primerOp) {
@@ -277,6 +278,8 @@ var calculadora = {
           display.innerHTML = numPantalla = ""
           operandos.opAnterior = "-"
         }
+
+        operandos.operador = "-"
         break;
       case "*":
       if (primerOp) {
@@ -296,6 +299,7 @@ var calculadora = {
         display.innerHTML = numPantalla = ""
         operandos.opAnterior = "*"
       }
+      operandos.operador = "*"
       break;
       case "/":
       if (primerOp) {
@@ -303,40 +307,84 @@ var calculadora = {
         primerOp = false
         display.innerHTML = numPantalla = ""
         operandos.opAnterior = "/"
-      }else{
+      }else if (operandos.opAnterior == "+" || operandos.opAnterior == "-") {
+        acum = acum + parseFloat(numPantalla)
+        display.innerHTML = numPantalla = ""
+        operandos.opAnterior = "/"
+        primerOp = false
+      }
+      else{
         acum = acum / parseFloat(numPantalla)
         display.innerHTML = numPantalla = ""
         operandos.opAnterior = "/"
       }
+
+      operandos.operador = "/"
       break;
       case "=":
+      /* para la secuencia de operaciones */
+      if (operandos.operador=="=") {
         switch (operandos.opAnterior) {
           case "+":
-            acum = acum + parseFloat(numPantalla)
+            acum = acum + operandos.numAnterior
             display.innerHTML = acum
-            numPantalla = 0
             break;
           case "-":
-            acum = acum - parseFloat(numPantalla)
+            acum = acum - operandos.numAnterior
             display.innerHTML = acum
-            numPantalla =0
             break;
           case "*":
-            acum = acum * parseFloat(numPantalla)
+            acum = acum * operandos.numAnterior
             display.innerHTML = acum
-            numPantalla =1
             break;
           case "/":
-            acum = acum / parseFloat(numPantalla)
+            acum = acum / operandos.numAnterior
             display.innerHTML = acum
-            numPantalla =1
             break;
         }
-
+      }
+      /* Para el funcionamiento normal, con encadenamiento de operaciones */
+      else {
+        switch (operandos.opAnterior) {
+          case "+":
+          if(operandos.operador=="+"){
+            operandos.numAnterior = parseFloat(display.innerHTML)
+          }
+          acum = acum + parseFloat(numPantalla)
+          display.innerHTML = acum
+          numPantalla = 0
+          operandos.operador = "="
+          break;
+          case "-":
+          if(operandos.operador=="-"){
+            operandos.numAnterior = parseFloat(display.innerHTML)
+          }
+          acum = acum - parseFloat(numPantalla)
+          display.innerHTML = acum
+          numPantalla =0
+          operandos.operador = "="
+          break;
+          case "*":
+          if(operandos.operador=="*"){
+            operandos.numAnterior = parseFloat(display.innerHTML)
+          }
+          acum = acum * parseFloat(numPantalla)
+          display.innerHTML = acum
+          numPantalla =1
+          operandos.operador = "="
+          break;
+          case "/":
+          if(operandos.operador=="/"){
+            operandos.numAnterior = parseFloat(display.innerHTML)
+          }
+          acum = acum / parseFloat(numPantalla)
+          display.innerHTML = acum
+          numPantalla =1
+          operandos.operador = "="
+          break;
+        }
+      }
         break;
-
-
-
     }
   }
 
